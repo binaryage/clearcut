@@ -17,3 +17,29 @@
 (defmacro call-site-error-idx [] 0)
 (defmacro console-reporter-idx [] 1)
 (defmacro error-reported-idx [] 2)
+
+; -- constants exported for cljs --------------------------------------------------------------------------------------------
+
+(defmacro emit-level-silent []
+  level-silent)
+
+(defmacro emit-level-fatal []
+  level-fatal)
+
+(defmacro emit-level-error []
+  level-error)
+
+(defmacro emit-level-warn []
+  level-warn)
+
+(defmacro emit-level-info []
+  level-info)
+
+(defmacro emit-level-debug []
+  level-debug)
+
+(defmacro emit-level-trace []
+  level-trace)
+
+(defmacro emit-all-levels []
+  all-levels)
