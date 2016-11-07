@@ -1,0 +1,11 @@
+*.iml
+pom.xml
+target/
+.lein*
+pom.xml.*
+.idea
+test/resources/.compiled
+.profiles/
+out/
+/.nrepl-port
+test/transcripts/_actual_
