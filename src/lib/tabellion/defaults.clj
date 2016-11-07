@@ -11,7 +11,7 @@
    :diagnostics                                true                                                                           ; #{true falsy}
    :skip-config-validation                     false                                                                          ; #{true falsy}
    :macroexpand-selectors                      true                                                                           ; #{true falsy}
-   :elided-log-levels                          #{4 5 6}                                                                       ; subsets of constants/all-levels
+   :elided-log-levels                          #{5 6}                                                                         ; a subset of constants/all-levels
 
    ; compile-time warnings/errors
 
