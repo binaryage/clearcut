@@ -10,6 +10,8 @@
 (def ^:const level-debug 5)
 (def ^:const level-trace 6)
 
+(def all-levels (set [0 1 2 3 4 5 6]))
+
 ; -- constants for runtime state slots --------------------------------------------------------------------------------------
 
 (defmacro call-site-error-idx [] 0)

@@ -27,7 +27,7 @@
 
 (defn read-project-config []
   (if cljs.env/*compiler*
-    (get-in @cljs.env/*compiler* [:options :external-config :tabellion/config])))                                                  ; https://github.com/bhauman/lein-figwheel/commit/80f7306bf5e6bd1330287a6f3cc259ff645d899b
+    (get-in @cljs.env/*compiler* [:options :external-config :tabellion/config])))                                             ; https://github.com/bhauman/lein-figwheel/commit/80f7306bf5e6bd1330287a6f3cc259ff645d899b
 
 (defn get-env-vars []
   (-> {}
@@ -134,6 +134,9 @@
 
 (defn debug? [& [config]]
   (true? (get-config-key :debug config)))
+
+(defn elided-log-levels [& [config]]
+  (get-config-key :elided-log-levels config))
 
 (defn macroexpand-selectors? [& [config]]
   (true? (get-config-key :macroexpand-selectors config)))

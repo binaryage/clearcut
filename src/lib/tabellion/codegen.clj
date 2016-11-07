@@ -6,7 +6,8 @@
   (:require [tabellion.config :as config]
             [tabellion.helpers :refer [gensym]]
             [tabellion.compiler :as compiler]
-            [tabellion.debug :refer [log debug-assert]]))
+            [tabellion.debug :refer [log debug-assert]]
+            [tabellion.constants :as constants]))
 
 ; -- helper code generators -------------------------------------------------------------------------------------------------
 
@@ -65,6 +66,10 @@
 (defn gen-supress-reporting? [msg-id]
   `(contains? (tabellion.config/get-suppress-reporting) ~msg-id))
 
+(defn should-elide-log-level? [level]
+  (debug-assert (contains? constants/all-levels level))
+  (contains? (config/elided-log-levels) level))
+
 ; -- raw implementations ----------------------------------------------------------------------------------------------------
 
 (defn gen-log-impl [level item-list]
@@ -74,6 +79,6 @@
 ; -- shared macro bodies ----------------------------------------------------------------------------------------------------
 
 (defn gen-log [level item-list]
-  ; TODO: test if elided
-  (gen-runtime-context!
-    (gen-log-impl level item-list)))
+  (if-not (should-elide-log-level? level)
+    (gen-runtime-context!
+      (gen-log-impl level item-list))))

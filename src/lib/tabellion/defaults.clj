@@ -1,7 +1,9 @@
 (ns tabellion.defaults
   "Default configuration + specs."
   (:require [cljs.env]
+            [clojure.set]
             [tabellion.state]
+            [tabellion.constants :as constants]
             [clojure.spec :as s]))
 
 (def config                                                                                                                   ; falsy below means 'nil' or 'false'
@@ -9,6 +11,7 @@
    :diagnostics                                true                                                                           ; #{true falsy}
    :skip-config-validation                     false                                                                          ; #{true falsy}
    :macroexpand-selectors                      true                                                                           ; #{true falsy}
+   :elided-log-levels                          #{4 5 6}                                                                       ; subsets of constants/all-levels
 
    ; compile-time warnings/errors
 
@@ -42,12 +45,15 @@
 (s/def ::config/boolish #(contains? #{true false nil} %))
 (s/def ::config/message #(contains? #{:error :warn false nil} %))
 (s/def ::config/reporting #(contains? #{:throw :console false nil} %))
+(s/def ::config/log-level #(contains? constants/all-levels %))
+(s/def ::config/log-levels-set #(clojure.set/subset? % constants/all-levels))
 
 ; -- config keys ------------------------------------------------------------------------------------------------------------
 
 (s/def ::config/diagnostics ::config/boolish)
 (s/def ::config/skip-config-validation ::config/boolish)
 (s/def ::config/macroexpand-selectors ::config/boolish)
+(s/def ::config/elided-log-levels ::config/log-levels-set)
 
 (s/def ::config/runtime-error-reporting ::config/reporting)
 (s/def ::config/runtime-warning-reporting ::config/reporting)
@@ -63,6 +69,7 @@
   (s/keys :req-un [::config/diagnostics
                    ::config/skip-config-validation
                    ::config/macroexpand-selectors
+                   ::config/elided-log-levels
                    ::config/runtime-error-reporting
                    ::config/runtime-warning-reporting
                    ::config/runtime-throw-errors-from-macro-call-sites
