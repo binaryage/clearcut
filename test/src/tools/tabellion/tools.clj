@@ -9,8 +9,7 @@
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
 (defn advanced-mode? []
-  (if cljs.env/*compiler*
-    (= (get-in @cljs.env/*compiler* [:options :optimizations]) :advanced)))
+  (config/advanced-mode?))
 
 (defn gen-when-compiler-config [pred config-template body]
   (let [config (config/get-current-compiler-config)
