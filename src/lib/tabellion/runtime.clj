@@ -10,7 +10,7 @@
             [tabellion.debug :refer [log debug-assert]]))
 
 (defmacro report-error-dynamically [msg data]
-  `(when-not (tabellion.state/was-error-reported?)                                                                         ; we want to print only first error for single invocation
+  `(when-not (tabellion.state/was-error-reported?)                                                                            ; we want to print only first error for single invocation
      (tabellion.state/mark-error-reported!)
      ~(gen-report-runtime-message :error msg data)))
 

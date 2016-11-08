@@ -2,7 +2,8 @@
   "Various helpers for our Clojure code."
   (:refer-clojure :exclude [gensym])
   (:require [cuerdas.core :as cuerdas]
-            [clojure.pprint :refer [pprint]]))
+            [clojure.pprint :refer [pprint]]
+            [tabellion.constants :as constants]))
 
 (defn indent-text [s count]
   (let [prefix (cuerdas/repeat " " count)]
@@ -20,3 +21,16 @@
 
 (defmacro gensym [name]
   `(clojure.core/gensym (str ~name "-")))
+
+(defn cljs? [env]
+  (boolean (:ns env)))
+
+(defn level-to-clojure-logging-method-symbol [level]
+  (assert (contains? constants/all-levels level))
+  (condp = level
+    constants/level-fatal 'clojure.tools.logging/fatal
+    constants/level-error 'clojure.tools.logging/error
+    constants/level-warn 'clojure.tools.logging/warn
+    constants/level-info 'clojure.tools.logging/info
+    constants/level-debug 'clojure.tools.logging/debug
+    constants/level-trace 'clojure.tools.logging/trace))

@@ -7,7 +7,9 @@
             [tabellion.helpers :refer [gensym]]
             [tabellion.compiler :as compiler]
             [tabellion.debug :refer [log debug-assert]]
-            [tabellion.constants :as constants]))
+            [tabellion.constants :as constants]
+            [tabellion.helpers :as helpers]
+            [tabellion.state :as state]))
 
 ; -- helper code generators -------------------------------------------------------------------------------------------------
 
@@ -70,15 +72,25 @@
   (debug-assert (contains? constants/all-levels level))
   (contains? (config/elided-log-levels) level))
 
+(defn tabellion-level-to-clojure-logging-level [level]
+  (case level
+    cons))
+
 ; -- raw implementations ----------------------------------------------------------------------------------------------------
 
-(defn gen-log-impl [level item-list]
-  (debug-assert (integer? level))
+(defn gen-cljs-log-impl [level item-list]
   `(tabellion.core/log-dynamically ~level (cljs.core/array ~@item-list)))
+
+(defn gen-clj-log-impl [level item-list]
+  (let [method (helpers/level-to-clojure-logging-method-symbol level)]
+    `(~method ~@item-list)))                                                                                                  ; TODO: this is naive version
 
 ; -- shared macro bodies ----------------------------------------------------------------------------------------------------
 
 (defn gen-log [level item-list]
+  (debug-assert (integer? level))
   (if-not (should-elide-log-level? level)
-    (gen-runtime-context!
-      (gen-log-impl level item-list))))
+    (if (helpers/cljs? state/*invocation-env*)
+      (gen-runtime-context!
+        (gen-cljs-log-impl level item-list))
+      (gen-clj-log-impl level item-list))))

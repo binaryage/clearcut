@@ -1,10 +1,9 @@
 (ns tabellion.defaults
   "Default configuration + specs."
-  (:require [cljs.env]
-            [clojure.set]
+  (:require [clojure.set]
+            [clojure.spec :as s]
             [tabellion.state]
-            [tabellion.constants :as constants]
-            [clojure.spec :as s]))
+            [tabellion.constants :as constants]))
 
 (def config                                                                                                                   ; falsy below means 'nil' or 'false'
   {; -- compiler config -----------------------------------------------------------------------------------------------------
@@ -38,6 +37,7 @@
 
 ; please note that we want this code to be co-located with default config for easier maintenance
 ; but formally we want config spec to reside in tabellion.config namespace
+(create-ns 'tabellion.config)
 (alias 'config 'tabellion.config)
 
 ; -- config helpers ---------------------------------------------------------------------------------------------------------

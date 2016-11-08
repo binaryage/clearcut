@@ -7,6 +7,7 @@ source "./config.sh"
 
 pushd "$ROOT"
 
+lein test-clojure
 ./scripts/run-functional-tests.sh
 ./scripts/run-circus-tests.sh
 

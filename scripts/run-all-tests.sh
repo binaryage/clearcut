@@ -8,6 +8,7 @@ source "./config.sh"
 pushd "$ROOT"
 
 lein clean
+lein test-clojure
 ./scripts/run-functional-tests-clojure18.sh
 lein clean
 ./scripts/run-functional-tests.sh

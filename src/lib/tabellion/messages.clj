@@ -1,7 +1,9 @@
 (ns tabellion.messages
   "A subsystem for printing compile-time warnings and errors. Piggybacks on cljs.analyzer."
-  (:require [cljs.analyzer :as ana]
-            [tabellion.debug :refer [debug-assert]]))
+  (:require                                                                                                                   ;[cljs.analyzer :as ana]
+    [tabellion.debug :refer [debug-assert]]))
+
+; TODO: maybe this won't be needed after all
 
 (def ^:dynamic *tabellion-message-prefix* "Tabellion")
 
@@ -29,13 +31,6 @@
 
 (defmacro gen-tabellion-message-prefix []
   *tabellion-message-prefix*)
-
-(def static-macros
-  '#{oget oset! ocall oapply ocall! oapply!
-     gget gset! gcall gapply gcall! gapply!})
-
-(defn static-macro? [command]
-  (contains? static-macros command))
 
 ; -- compile-time error/warning messages (in hooked cljs compiler) ----------------------------------------------------------
 

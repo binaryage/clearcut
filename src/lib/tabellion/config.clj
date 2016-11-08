@@ -1,10 +1,10 @@
 (ns tabellion.config
   "Code supporting static (compile-time) configuration. See defaults.clj for config map."
   (:refer-clojure :exclude [gensym])
-  (:require [cljs.env]
-            [clojure.spec :as s]
+  (:require [clojure.spec :as s]
             [env-config.core :as env-config]
-            [tabellion.state]
+            [tabellion.cljs :as cljs]
+            [tabellion.state :as state]
             [tabellion.helpers :as helpers :refer [gensym]]
             [tabellion.defaults :as defaults]))
 
@@ -19,15 +19,15 @@
   @adhoc-config-overrides)
 
 (defn advanced-mode? []
-  (if cljs.env/*compiler*
-    (= (get-in @cljs.env/*compiler* [:options :optimizations]) :advanced)))
+  (if-let [compiler (cljs/get-cljs-env-compiler)]
+    (= (get-in @compiler [:options :optimizations]) :advanced)))
 
 (defn prepare-default-config []
   (merge defaults/config (if (advanced-mode?) defaults/advanced-mode-config-overrides)))
 
 (defn read-project-config []
-  (if cljs.env/*compiler*
-    (get-in @cljs.env/*compiler* [:options :external-config :tabellion/config])))                                             ; https://github.com/bhauman/lein-figwheel/commit/80f7306bf5e6bd1330287a6f3cc259ff645d899b
+  (if-let [compiler (cljs/get-cljs-env-compiler)]
+    (get-in @compiler [:options :external-config :tabellion/config])))                                                        ; https://github.com/bhauman/lein-figwheel/commit/80f7306bf5e6bd1330287a6f3cc259ff645d899b
 
 (defn get-env-vars []
   (-> {}

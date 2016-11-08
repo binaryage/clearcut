@@ -38,6 +38,9 @@
   :profiles {:nuke-aliases
              {:aliases ^:replace {}}
 
+             :test-refresh
+             {:plugins [[com.jakemccrary/lein-test-refresh "0.17.0"]]}
+
              :lib
              ^{:pom-scope :provided}                                                                                          ; ! to overcome default jar/pom behaviour, our :dependencies replacement would be ignored for some reason
              [:nuke-aliases
@@ -96,6 +99,17 @@
                                                    :pseudo-names    true
                                                    :optimizations   :advanced
                                                    :external-config {:tabellion/config {:debug true}}}}}}}
+
+             :testing-clojure
+             {:dependencies   ^:replace [[org.clojure/clojure "1.9.0-alpha14"]
+                                         [org.clojure/tools.logging "0.3.1"]
+                                         [binaryage/env-config "0.1.1"]
+                                         [funcool/cuerdas "2.0.0"]
+                                         [environ "1.1.0"]]
+              :source-paths   ^:replace ["src/lib"]
+              :resource-paths ^:replace []
+              :test-paths     ^:replace ["test/src/clojure"]}
+
              :auto-testing
              {:cljsbuild {:builds {:basic-onone     {:notify-command ["scripts/rerun-tests.sh" "basic_onone"]}
                                    :basic-oadvanced {:notify-command ["scripts/rerun-tests.sh" "basic_oadvanced"]}}}}
@@ -110,6 +124,8 @@
   :aliases {"test"                 ["do"
                                     ["clean"]
                                     ["shell" "scripts/run-tests.sh"]]
+            "test-clojure"         ["with-profile" "+nuke-aliases,+testing-clojure" "test"]
+            "test-clojure-refresh" ["with-profile" "+nuke-aliases,+testing-clojure,+test-refresh" "test-refresh"]
             "test-all"             ["shell" "scripts/run-all-tests.sh"]
             "dev-functional-tests" ["shell" "scripts/dev-functional-tests.sh"]
             "run-functional-tests" ["do"
