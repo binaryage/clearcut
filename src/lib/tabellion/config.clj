@@ -42,12 +42,13 @@
 (def last-printed-config-explanation-str (volatile! nil))
 
 (defn print-invalid-config-warning [explanation-str config-str]
-  (let [indent (count "WARNING: ")]
+  (let [indent (count "WARNING: ")
+        inner-indent 2]
     (println "WARNING: Detected problems in tabellion config:")
-    (println (helpers/indent-text explanation-str (+ 2 (count "WARNING: "))))
+    (println (helpers/indent-text explanation-str (+ indent inner-indent)))
     (println (helpers/indent-text (with-out-str
                                     (println "When validating:")
-                                    (println (helpers/indent-text config-str 2))) indent))
+                                    (println (helpers/indent-text config-str inner-indent))) indent))
     (println)))
 
 (defn validate-config-and-report-problems-if-needed! [config]
