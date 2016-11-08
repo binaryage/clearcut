@@ -83,6 +83,7 @@
 
 (defn gen-clj-log-impl [level item-list]
   (let [method (helpers/level-to-clojure-logging-method-symbol level)]
+    (require 'clojure.tools.logging)                                                                                          ; TODO: make this robust
     `(~method ~@item-list)))                                                                                                  ; TODO: this is naive version
 
 ; -- shared macro bodies ----------------------------------------------------------------------------------------------------
