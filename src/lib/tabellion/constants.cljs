@@ -1,7 +1,6 @@
 (ns tabellion.constants
   (:require-macros [tabellion.constants :as c]))
 
-(def level-silent (c/emit-level-silent))
 (def level-fatal (c/emit-level-fatal))
 (def level-error (c/emit-level-error))
 (def level-warn (c/emit-level-warn))

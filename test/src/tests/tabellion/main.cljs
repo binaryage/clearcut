@@ -63,7 +63,7 @@
           (log/debug 5)
           (log/trace 6))
         (is (= ["ERROR: (1)" "ERROR: (2)" "WARN: (3)" "INFO: (4)" "LOG: (5)" "LOG: (6)"] @reporter))))
-    (with-compiler-config {:elided-log-levels #{0 1 2 3 4 5 6}}
+    (with-compiler-config {:elided-log-levels #{1 2 3 4 5 6}}
       (let [reporter (atom [])]
         (with-console-recording reporter
           (log/fatal 1)
@@ -73,7 +73,7 @@
           (log/debug 5)
           (log/trace 6))
         (is (= [] @reporter))))
-    (with-compiler-config {:elided-log-levels #{0 1 3 4}}
+    (with-compiler-config {:elided-log-levels #{1 3 4}}
       (let [reporter (atom [])]
         (with-console-recording reporter
           (log/fatal 1)

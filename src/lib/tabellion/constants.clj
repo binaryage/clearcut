@@ -2,7 +2,6 @@
 
 ; we follow Clojure's clojure.tools.logging convention
 ; :trace, :debug, :info, :warn, :error, :fatal
-(def ^:const level-silent 0)
 (def ^:const level-fatal 1)
 (def ^:const level-error 2)
 (def ^:const level-warn 3)
@@ -10,7 +9,7 @@
 (def ^:const level-debug 5)
 (def ^:const level-trace 6)
 
-(def all-levels #{level-silent level-fatal level-error level-warn level-info level-debug level-trace})
+(def all-levels #{level-fatal level-error level-warn level-info level-debug level-trace})
 
 ; -- constants for runtime state slots --------------------------------------------------------------------------------------
 
@@ -19,9 +18,6 @@
 (defmacro error-reported-idx [] 2)
 
 ; -- constants exported for cljs --------------------------------------------------------------------------------------------
-
-(defmacro emit-level-silent []
-  level-silent)
 
 (defmacro emit-level-fatal []
   level-fatal)
