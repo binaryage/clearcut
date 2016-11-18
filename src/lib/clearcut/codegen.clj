@@ -9,6 +9,7 @@
             [clearcut.debug :refer [log debug-assert]]
             [clearcut.constants :as constants]
             [clearcut.helpers :as helpers]
+            [clearcut.clojure]
             [clearcut.state :as state]))
 
 ; -- helper code generators -------------------------------------------------------------------------------------------------
@@ -78,9 +79,8 @@
   `(clearcut.core/log-dynamically ~level (cljs.core/array ~@item-list)))
 
 (defn gen-clj-log-impl [level item-list]
-  (let [method (helpers/level-to-clojure-logging-method-symbol level)]
-    (require 'clojure.tools.logging)                                                                                          ; TODO: make this robust
-    `(~method ~@item-list)))                                                                                                  ; TODO: this is naive version
+  ; TODO: ensure clojure.tools.logging here (at compile time)
+  `(clearcut.clojure/log ~'*ns* ~level ~@item-list))
 
 ; -- shared macro bodies ----------------------------------------------------------------------------------------------------
 

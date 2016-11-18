@@ -7,10 +7,14 @@
             [clearcut.codegen :refer :all]
             [clearcut.helpers :refer [gensym]]
             [clearcut.constants :as constants]
-            [clearcut.debug :refer [log debug-assert]]))
+            [clearcut.debug :refer [log debug-assert]]
+            [clearcut.helpers :as helpers]
+            [clearcut.clojure :as clearcut-clojure]
+            [clearcut.types :as types])
+  (:import (clearcut.types Style Format)))
 
 (defmacro report-error-dynamically [msg data]
-  `(when-not (clearcut.state/was-error-reported?)                                                                            ; we want to print only first error for single invocation
+  `(when-not (clearcut.state/was-error-reported?)                                                                             ; we want to print only first error for single invocation
      (clearcut.state/mark-error-reported!)
      ~(gen-report-runtime-message :error msg data)))
 

@@ -1,7 +1,7 @@
 (ns clearcut.cljs
   "Functions for interop with ClojureScript library.
 
-  When using tabbelion from Clojure we don't want to introduce a hard dependency on ClojureScript.
+  When using clearcut from Clojure we don't want to introduce a hard dependency on ClojureScript.
   Solution is to resolve ClojureScript API dynamically and use it only if available."
   (:refer-clojure :exclude [macroexpand])
   (:require [clojure.walk :refer [prewalk]]

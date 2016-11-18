@@ -34,3 +34,13 @@
     constants/level-info 'clojure.tools.logging/info
     constants/level-debug 'clojure.tools.logging/debug
     constants/level-trace 'clojure.tools.logging/trace))
+
+(defn level-to-clojure-logging-level [level]
+  (assert (contains? constants/all-levels level))
+  (condp = level
+    constants/level-fatal :fatal
+    constants/level-error :error
+    constants/level-warn :warn
+    constants/level-info :info
+    constants/level-debug :debug
+    constants/level-trace :trace))
