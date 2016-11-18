@@ -1,12 +1,12 @@
-(defproject binaryage/tabellion "0.1.0-SNAPSHOT"
+(defproject binaryage/clearcut "0.1.0-SNAPSHOT"
   :description "Unified logging overlay on top of console.log and clojure.tools.logging."
-  :url "https://github.com/binaryage/tabellion"
+  :url "https://github.com/binaryage/clearcut"
   :license {:name         "MIT License"
             :url          "http://opensource.org/licenses/MIT"
             :distribution :repo}
 
   :scm {:name "git"
-        :url  "https://github.com/binaryage/tabellion"}
+        :url  "https://github.com/binaryage/clearcut"}
 
   :dependencies [[org.clojure/clojure "1.9.0-alpha14" :scope "provided"]
                  [org.clojure/clojurescript "1.9.293" :scope "provided"]
@@ -82,10 +82,10 @@
                                     :compiler     {:output-to       "test/resources/.compiled/basic_onone/main.js"
                                                    :output-dir      "test/resources/.compiled/basic_onone"
                                                    :asset-path      ".compiled/basic_onone"
-                                                   :main            tabellion.runner
+                                                   :main            clearcut.runner
                                                    :optimizations   :none
-                                                   :external-config {:devtools/config  {:dont-detect-custom-formatters true}
-                                                                     :tabellion/config {:debug true}}}
+                                                   :external-config {:devtools/config {:dont-detect-custom-formatters true}
+                                                                     :clearcut/config {:debug true}}}
                                     :figwheel     true}}}}
              :testing-basic-oadvanced
              {:cljsbuild {:builds {:basic-oadvanced
@@ -96,10 +96,10 @@
                                     :compiler     {:output-to       "test/resources/.compiled/basic_oadvanced/main.js"
                                                    :output-dir      "test/resources/.compiled/basic_oadvanced"
                                                    :asset-path      ".compiled/basic_oadvanced"
-                                                   :main            tabellion.runner
+                                                   :main            clearcut.runner
                                                    :pseudo-names    true
                                                    :optimizations   :advanced
-                                                   :external-config {:tabellion/config {:debug true}}}}}}}
+                                                   :external-config {:clearcut/config {:debug true}}}}}}}
 
              :testing-clojure
              {:dependencies   ^:replace [[org.clojure/clojure "1.9.0-alpha14"]

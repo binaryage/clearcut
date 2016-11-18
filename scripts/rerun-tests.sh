@@ -10,3 +10,5 @@ pushd "$ROOT/test/resources"
 phantomjs phantom.js "$@"
 
 popd
+
+popd

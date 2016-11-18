@@ -15,15 +15,19 @@ PROJECT_VERSION=`cat "$PROJECT_VERSION_FILE" | grep "(def current-version" | cut
 if [ -z "$PROJECT_VERSION" ] ; then
   echo "Unable to retrieve 'current-version' string from '$PROJECT_VERSION_FILE'"
   popd
+  popd
   exit 1
 fi
 
 if [ ! "$LEIN_VERSION" = "$PROJECT_VERSION" ] ; then
   echo "Lein's project.clj version differs from version in '$PROJECT_VERSION_FILE': '$LEIN_VERSION' != '$PROJECT_VERSION'"
   popd
+  popd
   exit 2
 fi
 
 echo "All version strings are consistent: '$LEIN_VERSION'"
+
+popd
 
 popd

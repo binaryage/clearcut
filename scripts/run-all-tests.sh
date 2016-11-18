@@ -15,3 +15,5 @@ lein clean
 ./scripts/run-circus-tests.sh
 
 popd
+
+popd

@@ -7,30 +7,30 @@ source "./config.sh"
 
 pushd "$ROOT"
 
-if [ ! -d "$TABELLION_BROWSER_TESTS_USER_PROFILE" ] ; then
-  mkdir -p "$TABELLION_BROWSER_TESTS_USER_PROFILE"
+if [ ! -d "$CLEARCUT_BROWSER_TESTS_USER_PROFILE" ] ; then
+  mkdir -p "$CLEARCUT_BROWSER_TESTS_USER_PROFILE"
 fi
 
 EXE="/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary"
 if [ -f /usr/bin/google-chrome-unstable ] ; then
   EXE="/usr/bin/google-chrome-unstable" # this is for ubuntu
 fi
-if [ -n "$TABELLION_USE_CHROME" ] ; then
+if [ -n "$CLEARCUT_USE_CHROME" ] ; then
   EXE="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 fi
-if [ -n "$TABELLION_USE_CHROMIUM" ] ; then
+if [ -n "$CLEARCUT_USE_CHROMIUM" ] ; then
   EXE="/Applications/Chromium.app/Contents/MacOS/Chromium"
 fi
-if [ -n "$TABELLION_USE_CUSTOM_CHROME" ] ; then
-  EXE="$TABELLION_USE_CUSTOM_CHROME"
+if [ -n "$CLEARCUT_USE_CUSTOM_CHROME" ] ; then
+  EXE="$CLEARCUT_USE_CUSTOM_CHROME"
 fi
 
 echo "selected browser binary '$EXE'"
 
 set -x
 "$EXE" \
-      --remote-debugging-port=${TABELLION_CHROME_REMOTE_DEBUGGING_PORT:=9222} \
-      --user-data-dir="$TABELLION_BROWSER_TESTS_USER_PROFILE" \
+      --remote-debugging-port=${CLEARCUT_CHROME_REMOTE_DEBUGGING_PORT:=9222} \
+      --user-data-dir="$CLEARCUT_BROWSER_TESTS_USER_PROFILE" \
       --no-first-run \
       --enable-experimental-extension-apis \
       --disk-cache-dir=/dev/null \

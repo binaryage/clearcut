@@ -7,8 +7,10 @@ source "./config.sh"
 
 pushd "$ROOT"
 
-export TABELLION_ELIDE_DEVTOOLS=1
+export CLEARCUT_ELIDE_DEVTOOLS=1
 
-lein with-profile +circus run -m "tabellion.circus"
+lein with-profile +circus run -m "clearcut.circus"
+
+popd
 
 popd

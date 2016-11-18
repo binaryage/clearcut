@@ -7,7 +7,7 @@ source "./config.sh"
 
 pushd "$ROOT/test/resources"
 
-export TABELLION_ELIDE_DEVTOOLS=1
+export CLEARCUT_ELIDE_DEVTOOLS=1
 
 PHANTOM_VERSION=`phantomjs --version`
 echo
@@ -15,5 +15,7 @@ echo "Running functional tests under PhantomJS v$PHANTOM_VERSION, using Clojure 
 echo "===================================================================================================="
 lein build-tests
 phantomjs phantom.js "$@"
+
+popd
 
 popd

@@ -7,7 +7,7 @@ source "./config.sh"
 
 pushd "$ROOT"
 
-export TABELLION_DISABLE_TEST_RUNNER_ANSI=1
+export CLEARCUT_DISABLE_TEST_RUNNER_ANSI=1
 lein with-profile +cooper,+dev-basic-onone cooper
 
 popd

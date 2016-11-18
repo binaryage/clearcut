@@ -1,12 +1,12 @@
-# tabellion
+# clearcut
 
-[![GitHub license](https://img.shields.io/github/license/binaryage/tabellion.svg)](license.txt) 
-[![Clojars Project](https://img.shields.io/clojars/v/binaryage/tabellion.svg)](https://clojars.org/binaryage/tabellion) 
-[![Travis](https://img.shields.io/travis/binaryage/tabellion.svg)](https://travis-ci.org/binaryage/tabellion) 
+[![GitHub license](https://img.shields.io/github/license/binaryage/clearcut.svg)](license.txt) 
+[![Clojars Project](https://img.shields.io/clojars/v/binaryage/clearcut.svg)](https://clojars.org/binaryage/clearcut) 
+[![Travis](https://img.shields.io/travis/binaryage/clearcut.svg)](https://travis-ci.org/binaryage/clearcut) 
  
 This is a library offering a thin unified logging layer on top of console.log (ClojureScript) and clojure.tools.logging (Clojure).
 
-Tabellion helps you write logging code which can be copy&pasted between Clojure and ClojureScript or used in cljc files directly.
+Clearcut helps you write logging code which can be copy&pasted between Clojure and ClojureScript or used in cljc files directly.
 
 Design goals:
 

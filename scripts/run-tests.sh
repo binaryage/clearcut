@@ -12,3 +12,5 @@ lein test-clojure
 ./scripts/run-circus-tests.sh
 
 popd
+
+popd
