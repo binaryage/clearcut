@@ -8,25 +8,24 @@
   :scm {:name "git"
         :url  "https://github.com/binaryage/clearcut"}
 
-  :dependencies [[org.clojure/clojure "1.9.0-alpha14" :scope "provided"]
-                 [org.clojure/clojurescript "1.9.293" :scope "provided"]
+  :dependencies [[org.clojure/clojure "1.9.0-alpha15" :scope "provided"]
+                 [org.clojure/clojurescript "1.9.521" :scope "provided"]
                  [org.clojure/tools.logging "0.3.1" :scope "provided"]
-                 [binaryage/env-config "0.1.1"]
-                 [funcool/cuerdas "2.0.0"]
+                 [binaryage/env-config "0.2.0"]
+                 [funcool/cuerdas "2.0.3"]
                  [environ "1.1.0"]
 
-                 [binaryage/devtools "0.8.2" :scope "test"]
-                 [figwheel "0.5.8" :scope "test"]
-                 [org.clojure/tools.logging "0.3.1" :scope "test"]
+                 [binaryage/devtools "0.9.4" :scope "test"]
+                 [figwheel "0.5.10" :scope "test"]
                  [clj-logging-config "1.9.12" :scope "test"]
                  [clansi "1.0.0" :scope "test"]]
 
   :clean-targets ^{:protect false} ["target"
                                     "test/resources/.compiled"]
 
-  :plugins [[lein-cljsbuild "1.1.4"]
+  :plugins [[lein-cljsbuild "1.1.5"]
             [lein-shell "0.5.0"]
-            [lein-figwheel "0.5.8"]]
+            [lein-figwheel "0.5.10"]]
 
   ; this is just for IntelliJ + Cursive to play well
   :source-paths ["src/lib"]
@@ -56,7 +55,7 @@
 
              :clojure18
              {:dependencies [[org.clojure/clojure "1.8.0" :scope "provided"]
-                             [clojure-future-spec "1.9.0-alpha13" :scope "provided"]]}
+                             [clojure-future-spec "1.9.0-alpha15" :scope "provided"]]}
 
              :cooper
              {:plugins [[lein-cooper "1.2.2"]]}
@@ -102,10 +101,10 @@
                                                    :external-config {:clearcut/config {:debug true}}}}}}}
 
              :testing-clojure
-             {:dependencies   ^:replace [[org.clojure/clojure "1.9.0-alpha14"]
+             {:dependencies   ^:replace [[org.clojure/clojure "1.9.0-alpha15"]
                                          [org.clojure/tools.logging "0.3.1"]
-                                         [binaryage/env-config "0.1.1"]
-                                         [funcool/cuerdas "2.0.0"]
+                                         [binaryage/env-config "0.2.0"]
+                                         [funcool/cuerdas "2.0.3"]
                                          [environ "1.1.0"]]
               :source-paths   ^:replace ["src/lib"]
               :resource-paths ^:replace []
