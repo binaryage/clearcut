@@ -21,16 +21,15 @@
 (deftest test-logging
   (with-compiler-config {:elided-log-levels #{}}
     (testing "simple exercise of all log macros"
-      (let [reporter (atom [])
-            expected ["ERROR: (1)" "ERROR: (2)" "WARN: (3)" "INFO: (4)" "LOG: (5)" "LOG: (6)"]]
-        (with-console-recording reporter
+      (let [output (atom [])]
+        (with-console-recording output
           (log/fatal 1)
           (log/error 2)
           (log/warn 3)
           (log/info 4)
           (log/debug 5)
           (log/trace 6))
-        (is (= expected @reporter))))
+        (is (= ["ERROR: (1)" "ERROR: (2)" "WARN: (3)" "INFO: (4)" "LOG: (5)" "LOG: (6)"] @output))))
     (when-not-advanced-mode
       (testing "multiple parameters without formatting"
         (let [reporter (atom [])
@@ -54,32 +53,32 @@
 (deftest test-eliding
   (testing ":elided-log-levels does compile-time eliding"
     (with-compiler-config {:elided-log-levels #{}}
-      (let [reporter (atom [])]
-        (with-console-recording reporter
+      (let [output (atom [])]
+        (with-console-recording output
           (log/fatal 1)
           (log/error 2)
           (log/warn 3)
           (log/info 4)
           (log/debug 5)
           (log/trace 6))
-        (is (= ["ERROR: (1)" "ERROR: (2)" "WARN: (3)" "INFO: (4)" "LOG: (5)" "LOG: (6)"] @reporter))))
+        (is (= ["ERROR: (1)" "ERROR: (2)" "WARN: (3)" "INFO: (4)" "LOG: (5)" "LOG: (6)"] @output))))
     (with-compiler-config {:elided-log-levels #{1 2 3 4 5 6}}
-      (let [reporter (atom [])]
-        (with-console-recording reporter
+      (let [output (atom [])]
+        (with-console-recording output
           (log/fatal 1)
           (log/error 2)
           (log/warn 3)
           (log/info 4)
           (log/debug 5)
           (log/trace 6))
-        (is (= [] @reporter))))
+        (is (= [] @output))))
     (with-compiler-config {:elided-log-levels #{1 3 4}}
-      (let [reporter (atom [])]
-        (with-console-recording reporter
+      (let [output (atom [])]
+        (with-console-recording output
           (log/fatal 1)
           (log/error 2)
           (log/warn 3)
           (log/info 4)
           (log/debug 5)
           (log/trace 6))
-        (is (= ["ERROR: (2)" "LOG: (5)" "LOG: (6)"] @reporter))))))
+        (is (= ["ERROR: (2)" "LOG: (5)" "LOG: (6)"] @output))))))
