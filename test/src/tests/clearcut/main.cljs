@@ -13,7 +13,8 @@
                             with-console-recording
                             with-stderr-recording
                             when-compiler-config when-not-compiler-config
-                            macro-identity]]
+                            macro-identity
+                            logs?]]
             [clojure.string :as string]))
 
 (use-fixtures :once with-main-init with-captured-console (setup-runtime-config {:use-envelope false}))
@@ -32,23 +33,17 @@
         (is (= ["ERROR: (1)" "ERROR: (2)" "WARN: (3)" "INFO: (4)" "LOG: (5)" "LOG: (6)"] @output))))
     (when-not-advanced-mode
       (testing "multiple parameters without formatting"
-        (let [reporter (atom [])
-              expected ["LOG: (\"hello\" 42 4.2 true :key #\"regexp\")"
-                        "LOG: (#object[Object [object Window]] #object[Function \"function () {}\"] cljs.core/TransientVector)"]]
-          (with-console-recording reporter
-            (log/debug "hello" 42 4.2 true :key #"regexp")
-            (log/debug js/window IAtom TransientVector))
-          (is (= expected @reporter)))))
+        (logs? (log/debug "hello" 42 4.2 true :key #"regexp")
+               "LOG: (\"hello\" 42 4.2 true :key #\"regexp\")")
+        (logs? (log/debug js/window IAtom TransientVector)
+               "LOG: (#object[Object [object Window]] #object[Function \"function () {}\"] cljs.core/TransientVector)")))
     (testing "styling"
-      (let [reporter (atom [])
-            expected ["LOG: (\"%c%s\" \"color:red\" \"hello\")"
-                      "LOG: (\"%s %c%s %c%s %s\" \"start\" \"color:red\" \"hello\" \"color:blue\" \"world!\" \"end\")"
-                      "LOG: (\"%s %c%o\" \"styling object\" \"color:purple\" #js {})"]]
-        (with-console-recording reporter
-          (log/debug (log/style "color:red") "hello")
-          (log/debug "start" (log/style "color:red") "hello" (log/style "color:blue") "world!" "end")
-          (log/debug "styling object" (log/style "color:purple") (js-obj)))
-        (is (= expected @reporter))))))
+      (logs? (log/debug (log/style "color:red") "hello")
+             "LOG: (\"%c%s\" \"color:red\" \"hello\")")
+      (logs? (log/debug "start" (log/style "color:red") "hello" (log/style "color:blue") "world!" "end")
+             "LOG: (\"%s %c%s %c%s %s\" \"start\" \"color:red\" \"hello\" \"color:blue\" \"world!\" \"end\")")
+      (logs? (log/debug "styling object" (log/style "color:purple") (js-obj))
+             "LOG: (\"%s %c%o\" \"styling object\" \"color:purple\" #js {})"))))
 
 (deftest test-eliding
   (testing ":elided-log-levels does compile-time eliding"

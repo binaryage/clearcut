@@ -82,6 +82,14 @@
        (finally
          (remove-console-recorder! recorder#)))))
 
+(defmacro logs? [code expected]
+  (let [output-sym (gensym "output-")]
+    `(let [recorder# (atom [])]
+       (with-console-recording recorder#
+         ~code)
+       (let [~output-sym (first @recorder#)]
+         (cljs.test/is (= ~expected ~output-sym))))))
+
 ; -- helper macros ----------------------------------------------------------------------------------------------------------
 
 (defmacro when-advanced-mode [& body]
