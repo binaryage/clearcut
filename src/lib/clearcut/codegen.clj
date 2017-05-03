@@ -12,6 +12,9 @@
             [clearcut.clojure]
             [clearcut.state :as state]))
 
+(defn cljs? []
+  (helpers/cljs? state/*invocation-env*))
+
 ; -- helper code generators -------------------------------------------------------------------------------------------------
 
 (defn gen-reported-message [msg]
@@ -88,6 +91,7 @@
   (debug-assert (integer? level))
   (if-not (should-elide-log-level? level)
     (if (helpers/cljs? state/*invocation-env*)
+    (if (cljs?)
       (gen-runtime-context!
         (gen-cljs-log-impl level item-list))
       (gen-clj-log-impl level item-list))))
