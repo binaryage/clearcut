@@ -72,7 +72,7 @@
 (defn gen-supress-reporting? [msg-id]
   `(contains? (clearcut.config/get-suppress-reporting) ~msg-id))
 
-(defn should-elide-log-level? [level]
+(defn elide-log-level? [level]
   (debug-assert (contains? constants/all-levels level))
   (contains? (config/elided-log-levels) level))
 
@@ -89,8 +89,7 @@
 
 (defn gen-log [level item-list]
   (debug-assert (integer? level))
-  (if-not (should-elide-log-level? level)
-    (if (helpers/cljs? state/*invocation-env*)
+  (if-not (elide-log-level? level)
     (if (cljs?)
       (gen-runtime-context!
         (gen-cljs-log-impl level item-list))
