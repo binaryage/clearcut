@@ -21,15 +21,15 @@
 ; -- diagnostics reporting --------------------------------------------------------------------------------------------------
 
 (defn ^:dynamic report-error-dynamically [msg data]
-  (runtime/report-error-dynamically msg data))
+  (runtime/gen-report-error-dynamically msg data))
 
 (defn ^:dynamic report-warning-dynamically [msg data]
-  (runtime/report-warning-dynamically msg data))
+  (runtime/gen-report-warning-dynamically msg data))
 
 (defn ^:dynamic report-if-needed-dynamically [msg-id & [info]]
-  (runtime/report-if-needed-dynamically msg-id info))
+  (runtime/gen-report-if-needed-dynamically msg-id info))
 
 ; -- runtime support for macros ---------------------------------------------------------------------------------------------
 
 (defn log-dynamically [level items]
-  (runtime/log-dynamically level items))
+  (runtime/gen-log-dynamically level items))

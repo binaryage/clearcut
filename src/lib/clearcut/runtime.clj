@@ -13,15 +13,15 @@
             [clearcut.types :as types])
   (:import (clearcut.types Style Format)))
 
-(defmacro report-error-dynamically [msg data]
+(defmacro gen-report-error-dynamically [msg data]
   `(when-not (clearcut.state/was-error-reported?)                                                                             ; we want to print only first error for single invocation
      (clearcut.state/mark-error-reported!)
      ~(gen-report-runtime-message :error msg data)))
 
-(defmacro report-warning-dynamically [msg data]
+(defmacro gen-report-warning-dynamically [msg data]
   (gen-report-runtime-message :warning msg data))
 
-(defmacro report-if-needed-dynamically [msg-id info-sym]
+(defmacro gen-report-if-needed-dynamically [msg-id info-sym]
   (debug-assert (symbol? info-sym))
   (if (config/diagnostics?)
     `(do
@@ -33,7 +33,7 @@
            (false nil) nil))
        nil)))
 
-(defmacro log-dynamically [level items-array-sym]
+(defmacro gen-log-dynamically [level items-array-sym]
   (debug-assert (symbol? items-array-sym))
   `(log! ~level ~items-array-sym))
 
