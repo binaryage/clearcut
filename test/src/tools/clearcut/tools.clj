@@ -26,11 +26,6 @@
 (defn gen-arena-separator []
   (gen-marker (get-arena-separator)))
 
-(defn gen-devtools-if-needed []
-  (if-not (= (env :clearcut-elide-devtools) "1")
-    `(under-chrome
-       (devtools.core/install!))))
-
 ; http://stackoverflow.com/a/15627016/84283
 (defn hexify "Convert byte sequence to hex string" [coll]
   (let [hex [\0 \1 \2 \3 \4 \5 \6 \7 \8 \9 \a \b \c \d \e \f]]
@@ -122,12 +117,10 @@
      ~chrome-code))
 
 (defmacro init-main-test! []
-  `(do
-     ~(gen-devtools-if-needed)))
+  `(do))
 
 (defmacro init-arena-test! []
   `(do
-     ~(gen-devtools-if-needed)
      ~(gen-arena-separator)))
 
 (defmacro runonce [& body]

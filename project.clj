@@ -81,6 +81,7 @@
                                     :compiler     {:output-to       "test/resources/.compiled/basic_onone/main.js"
                                                    :output-dir      "test/resources/.compiled/basic_onone"
                                                    :asset-path      ".compiled/basic_onone"
+                                                   :preloads        [devtools.preload]
                                                    :main            clearcut.runner
                                                    :optimizations   :none
                                                    :external-config {:devtools/config {:dont-detect-custom-formatters true}

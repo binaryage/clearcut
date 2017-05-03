@@ -1,8 +1,7 @@
 (ns clearcut.tools
   (:require-macros [clearcut.tools :refer [init-main-test!]])
   (:require [cljs.test :refer-macros [deftest testing is are run-tests use-fixtures]]
-            [clearcut.config :as config]
-            [devtools.core]))
+            [clearcut.config :as config]))
 
 ; -- console recording ------------------------------------------------------------------------------------------------------
 
