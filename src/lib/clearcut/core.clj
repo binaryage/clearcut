@@ -1,6 +1,6 @@
 (ns clearcut.core
   "Public macros to be consumed via core.cljs."
-  (:require [clojure.spec :as s]
+  (:require [clojure.spec.alpha :as s]
             [clearcut.constants :as constants]
             [clearcut.codegen :refer [gen-log]]
             [clearcut.compiler :refer [with-compiler-context!]]))

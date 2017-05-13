@@ -8,8 +8,8 @@
   :scm {:name "git"
         :url  "https://github.com/binaryage/clearcut"}
 
-  :dependencies [[org.clojure/clojure "1.9.0-alpha15" :scope "provided"]
-                 [org.clojure/clojurescript "1.9.521" :scope "provided"]
+  :dependencies [[org.clojure/clojure "1.9.0-alpha16" :scope "provided"]
+                 [org.clojure/clojurescript "1.9.542" :scope "provided"]
                  [org.clojure/tools.logging "0.3.1" :scope "provided"]
                  [binaryage/env-config "0.2.0"]
                  [funcool/cuerdas "2.0.3"]
@@ -23,7 +23,7 @@
   :clean-targets ^{:protect false} ["target"
                                     "test/resources/.compiled"]
 
-  :plugins [[lein-cljsbuild "1.1.5"]
+  :plugins [[lein-cljsbuild "1.1.6"]
             [lein-shell "0.5.0"]
             [lein-figwheel "0.5.10"]]
 
@@ -55,7 +55,7 @@
 
              :clojure18
              {:dependencies [[org.clojure/clojure "1.8.0" :scope "provided"]
-                             [clojure-future-spec "1.9.0-alpha15" :scope "provided"]]}
+                             [clojure-future-spec "1.9.0-alpha16-1" :scope "provided"]]}
 
              :cooper
              {:plugins [[lein-cooper "1.2.2"]]}
@@ -102,7 +102,7 @@
                                                    :external-config {:clearcut/config {:debug true}}}}}}}
 
              :testing-clojure
-             {:dependencies   ^:replace [[org.clojure/clojure "1.9.0-alpha15"]
+             {:dependencies   ^:replace [[org.clojure/clojure "1.9.0-alpha16"]
                                          [org.clojure/tools.logging "0.3.1"]
                                          [binaryage/env-config "0.2.0"]
                                          [funcool/cuerdas "2.0.3"]

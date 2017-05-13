@@ -1,7 +1,7 @@
 (ns clearcut.defaults
   "Default configuration + specs."
   (:require [clojure.set]
-            [clojure.spec :as s]
+            [clojure.spec.alpha :as s]
             [clearcut.state]
             [clearcut.constants :as constants]))
 

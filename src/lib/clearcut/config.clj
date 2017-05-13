@@ -1,7 +1,7 @@
 (ns clearcut.config
   "Code supporting static (compile-time) configuration. See defaults.clj for config map."
   (:refer-clojure :exclude [gensym])
-  (:require [clojure.spec :as s]
+  (:require [clojure.spec.alpha :as s]
             [env-config.core :as env-config]
             [clearcut.cljs :as cljs]
             [clearcut.state :as state]
@@ -27,7 +27,7 @@
 
 (defn read-project-config []
   (if-let [compiler (cljs/get-cljs-env-compiler)]
-    (get-in @compiler [:options :external-config :clearcut/config])))                                                        ; https://github.com/bhauman/lein-figwheel/commit/80f7306bf5e6bd1330287a6f3cc259ff645d899b
+    (get-in @compiler [:options :external-config :clearcut/config])))                                                         ; https://github.com/bhauman/lein-figwheel/commit/80f7306bf5e6bd1330287a6f3cc259ff645d899b
 
 (defn get-env-vars []
   (-> {}
