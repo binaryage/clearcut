@@ -1,27 +1,21 @@
 sudo: true
 dist: trusty
 language: clojure
-
 notifications:
   email:
   - antonin@hildebrand.cz
   hipchat:
     rooms:
-      secure: EqNuux+6kcgVUV5eO12uQaEPseekXq9W0B/Ml2ujCEvSX2D0l8ot1TuBtAfj09UEEdOFz7hgE4aUnZU66EL7siUf0wefXFlQRatPOyhCSMk+NsCTOST/Y9E22atzjtxTQs8GiafCHbRu9HfLKWKG09A90w4+NAxZeoZSc9i46ThNzXeLAc4SYx1ZVPQb0FM8SxgL3vKAdpiu1yo/j/4/OGgSiZxiMHfsnJRkhwv8xc5gFe4+vKhOuKwhO+OrQOjrBGgICkmaZZWMqX7GubvajPxITcu7C8z9SKUd3WR+l2bLxEJDLw0R0xmSQFdDgX/s0riT9RRdSVF9Ybc0yejqnZh6U8UrOx3qOA1BiTBCbVVlnh7bpDEO3A9nxfaZTc3oBW4/93vO9wGJUepsobylBsHp8OrhugKn23b7BDLI8is+oj8Gai6/FIkOw4cCapU5Q3XMwcSL1h+ryTsGbU995UndRWcsPop2cYN8xHXPfXIn4vGuNLRjvpIvGN9VapC1xxn6hKuotGpL6FJzRs9fb9Dp9QbSGQ+JtDvsdXO0Ysih0rFCjEUJODfHbUQULxEaOweAb/YS2Ty07LE57+Cu0fJW7fGXyPDjocvZ7Dmr4wv355iIhiihPrAitEaxAxtRto5nU9c68c62tlTvFKvvPq91D81FpxTvq33Q3Iq2nVU=
+      secure: OQDXsZ8/ppooXuwoEs2EOU1spguOTDM33mJxI4LCPfRAN/tfvfe9M2L/itDuVsVxeoRVsd/amgAcmDGBCMBjzICkmgqzmIxTkKKS6o4I0d4L6DnuNWiu/PpQ934oDOnD/OYwhZpWO/YCHyByp+VFW36iFlLYd14E/uTvmRBgEA/94IG3+S8VWEDjd4NbedGP9hKG8BjXLbx8U2ajIAuvvJIse+2XryZagXoXFLgprAZRAuUFUeIun/HxKs4mcQMgOen7T61b4jtF3dZsMKt133553LCNccpDxnqA5SaBHUPYGvz4lh1M8/mesk42YcMcIO5vvQ+oF//Hmj7cEd8OxsD48CuJUe9iDsuXCNL3OWaPUbsLQQOv2d8PTWv+61/LDILeNvP/0tWGDpp63S0t2zVNg0XpAYxQCcOXLROe3cWIWaFDblFsI6HntY7Ee+3WmvLpvXStMDhIGYdbR8LbvhT9lsT5anobOnLvfBEwbwbcA3FN9VHqYThzi17+CKbteb+NA88xCFy6fvqH+InNY7N2Xaeylpn3+QEefxxfuK40cX92MGxtBUERWdTIXKsOjnQxVAOqxT5w4wkw8j0omVFRqncYS03hxXBLhTG7CO/ca5dpeSD+ngPdi8qSWBUCCD8otx6jVsnQGQUUv/o8YOfOWhuRK8OzJwv0B/DBAbE=
     template:
     - '<a href="%{build_url}">%{repository}#%{build_number}</a>: %{message} (<a href="%{compare_url}">changes</a>)'
     format: html
-
 cache:
   directories:
-    - $HOME/.m2
-
+  - "$HOME/.m2"
 before_script:
-  # update lein to latest, https://github.com/technomancy/leiningen/issues/2014#issuecomment-153829977
-  - yes y | sudo lein upgrade
-  # install nodejs for npm, which is needed for js-beautify
-  - curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
-  - sudo apt-get install -y nodejs colordiff
-  - sudo npm install -g js-beautify
-
+- yes y | sudo lein upgrade
+- curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+- sudo apt-get install -y nodejs colordiff
+- sudo npm install -g js-beautify
 script: lein test-all
