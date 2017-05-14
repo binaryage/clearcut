@@ -24,7 +24,7 @@
                                     (.push format "%c")
                                     (.push result (.-css item))
                                     (recur (next items) nil))
-            (helpers/format? item) (recur (next items) (.-string_format item))
+            (helpers/format? item) (recur (next items) (.-fmtstr item))
             :else (do
                     (.push format (or carry (if (string? item) "%s " "%o ")))
                     (.push result item)

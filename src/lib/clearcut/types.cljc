@@ -5,7 +5,7 @@
 (defn make-style [css]
   (Style. css))
 
-(deftype Format [format-string])
+(deftype Format [fmtstr])
 
-(defn make-format [format-string]
-  (Format. format-string))
+(defn make-format [fmtstr]
+  (Format. fmtstr))

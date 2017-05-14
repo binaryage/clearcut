@@ -15,8 +15,8 @@
 (defn style [css]
   (types/make-style css))
 
-(defn format [format-string]
-  (types/make-format format-string))
+(defn format [fmtstr]
+  (types/make-format fmtstr))
 
 ; -- diagnostics reporting --------------------------------------------------------------------------------------------------
 
