@@ -12,7 +12,7 @@
   (or (helpers/style? o)
       (helpers/format? o)))
 
-(defn prepare-format-string [items-array]
+(defn prepare-formatted-log-args [items-array]
   (let [result (array)
         format (array)]
     (loop [items (seq items-array)
@@ -35,13 +35,12 @@
 
 (defn prepare-log-args [items-array]
   (if (some formatted? items-array)
-    (prepare-format-string items-array)
-    (.slice items-array)))
+    (prepare-formatted-log-args items-array)
+    items-array))
 
 (defn log! [level items-array]
   (let [method (level-to-method level)
-        args! (prepare-log-args items-array)
+        args-array (prepare-log-args items-array)
+        method+args (.concat #js [method] args-array)
         reporter (state/get-console-reporter)]
-    ; note that args is a newly created array so we are free to alter it
-    (.unshift args! method)
-    (.apply reporter nil args!)))
+    (.apply reporter nil method+args)))
