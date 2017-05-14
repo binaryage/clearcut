@@ -46,6 +46,16 @@
       (logs? (log/debug "styling object" (log/style "color:purple") (js-obj))
              "LOG: (\"%s %c%o\" \"styling object\" \"color:purple\" #js {})"))))
 
+(deftest test-variadic-api
+  ; note we rely on default eliding here, with-compiler-config won't work here, because variadic api is pre-compiled
+  (testing "variadic invocation"
+    (logs? (apply log/fatal [(log/style "color:red") "Hello," "world!"])
+           "ERROR: (\"%c%s %s\" \"color:red\" \"Hello,\" \"world!\")")
+    (logs? (.call log/fatal nil "Hello," "world!")
+           "ERROR: (\"Hello,\" \"world!\")")
+    (logs? (.apply log/fatal nil #js ["Hello," "world!"])
+           "ERROR: (\"Hello,\" \"world!\")")))
+
 (deftest test-eliding
   (testing ":elided-log-levels does compile-time eliding"
     (with-compiler-config {:elided-log-levels #{}}
