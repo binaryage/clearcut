@@ -9,7 +9,14 @@
 (def ^:const level-debug 5)
 (def ^:const level-trace 6)
 
-(def all-levels #{level-fatal level-error level-warn level-info level-debug level-trace})
+(def levels {:fatal level-fatal
+             :error level-error
+             :warn  level-warn
+             :info  level-info
+             :debug level-debug
+             :trace level-trace})
+
+(def all-levels (set (vals levels)))
 
 ; -- constants for runtime state slots --------------------------------------------------------------------------------------
 
