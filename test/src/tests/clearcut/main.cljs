@@ -31,12 +31,13 @@
           (log/debug 5)
           (log/trace 6))
         (is (= ["ERROR: (1)" "ERROR: (2)" "WARN: (3)" "INFO: (4)" "LOG: (5)" "LOG: (6)"] @output))))
-    (when-not-advanced-mode
-      (testing "multiple parameters without formatting"
+    (testing "multiple parameters without formatting"
+      (when-not-advanced-mode
         (logs? (log/debug "hello" 42 4.2 true :key #"regexp")
                "LOG: (\"hello\" 42 4.2 true :key #\"regexp\")")
-        (logs? (log/debug js/window IAtom TransientVector)
-               "LOG: (#object[Object [object Window]] #object[Function \"function () {}\"] cljs.core/TransientVector)")))
+        (under-phantom
+          (logs? (log/debug js/window IAtom TransientVector)
+                 "LOG: (#object[Object [object Window]] #object[Function \"function () {}\"] cljs.core/TransientVector)"))))
     (testing "styling"
       (logs? (log/debug (log/style "color:red") "hello")
              "LOG: (\"%c%s\" \"color:red\" \"hello\")")
