@@ -3,11 +3,29 @@
   (:refer-clojure :exclude [macroexpand])
   (:require [clojure.walk :refer [prewalk]]
             [clojure.set :as set]
+            [cljs.analyzer]
+            [cljs.closure]
+            [cljs.env]
             [clearcut.helpers :as helpers]
             [clearcut.state :as state]
             [clearcut.messages :refer [messages-registered? register-messages]]
             [clearcut.debug :refer [debug-assert]]
             [clearcut.cljs :as cljs]))
+
+; -- cljs macro expanding ---------------------------------------------------------------------------------------------------
+
+(defn macroexpand* [env form]
+  (let [expanded-form (cljs.analyzer/macroexpand-1 env form)]
+    (if (identical? form expanded-form)
+      expanded-form
+      (recur env expanded-form))))
+
+(defn macroexpand-all* [env form]
+  (prewalk (fn [x] (if (seq? x) (macroexpand* env x) x)) form))
+
+(defn macroexpand [form]
+  (debug-assert clearcut.state/*invocation-env*)
+  (macroexpand-all* clearcut.state/*invocation-env* form))
 
 ; -- compiler context -------------------------------------------------------------------------------------------------------
 
@@ -26,7 +44,7 @@
   (let [messages-set (set (if (coll? messages) messages (list messages)))]
     `(let [updated-messages-set# (set/union (:suppress-reporting clearcut.state/*invocation-opts*) ~messages-set)]
        (clearcut.compiler/with-compiler-opts! {:suppress-reporting updated-messages-set#}
-                                               ~@body))))
+         ~@body))))
 
 (defmacro with-compiler-diagnostics-context! [form env & body]
   `(binding [clearcut.state/*invocation-form* ~form

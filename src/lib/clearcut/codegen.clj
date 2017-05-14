@@ -5,12 +5,14 @@
   (:refer-clojure :exclude [gensym])
   (:require [clearcut.config :as config]
             [clearcut.helpers :refer [gensym]]
-            [clearcut.compiler :as compiler]
+            [clearcut.schema :as schema]
             [clearcut.debug :refer [log debug-assert]]
             [clearcut.constants :as constants]
             [clearcut.helpers :as helpers]
             [clearcut.clojure]
-            [clearcut.state :as state]))
+            [clearcut.state :as state]
+            [clojure.spec.alpha :as s]
+            [clearcut.compiler :as compiler]))
 
 (defn cljs? []
   (helpers/cljs? state/*invocation-env*))
@@ -78,14 +80,33 @@
 
 ; -- raw implementations ----------------------------------------------------------------------------------------------------
 
+(defn level-to-method [level]
+  (condp = level
+    constants/level-fatal 'js/console.error
+    constants/level-error 'js/console.error
+    constants/level-warn 'js/console.warn
+    constants/level-info 'js/console.info
+    constants/level-debug 'js/console.log
+    constants/level-trace 'js/console.log))
+
+(defn gen-static-cljs-log [level destructured-params]
+  (let [prepared-args (schema/prepare-log-args destructured-params)
+        method (level-to-method level)]
+    ; TODO: generalize it here for advanced builds where we want to emit direct code
+    `((clearcut.state/get-console-reporter) ~method ~@prepared-args)))
+
 (defn gen-cljs-log-impl [level items]
-  (let [items-array (if (symbol? items)
-                      `(cljs.core/to-array ~items)
-                      `(cljs.core/array ~@items))]
-    `(clearcut.core/log-dynamically ~level ~items-array)))
+  (debug-assert (or (list? items) (symbol? items)))
+  (if (symbol? items)                                                                                                         ; items is a symbol in cljs when called with variadic args
+    `(clearcut.core/log-dynamically ~level (cljs.core/to-array ~items))
+    (if-let [static-params (schema/static-params? items)]
+      (gen-static-cljs-log level static-params)
+      `(clearcut.core/log-dynamically ~level (cljs.core/array ~@items)))))
 
 (defn gen-clj-log-impl [level items]
+  (debug-assert (list? items))
   ; TODO: ensure clojure.tools.logging here (at compile time)
+  ; TOOD: we could do macro-expansion and compile-time validation of items
   `(clearcut.clojure/log ~'*ns* ~level ~@items))
 
 ; -- shared macro bodies ----------------------------------------------------------------------------------------------------
@@ -94,10 +115,6 @@
   (debug-assert (integer? level))
   (if-not (elide-log-level? level)
     (if (cljs?)
-      (do
-        (debug-assert (or (list? items) (symbol? items)))                                                                     ; items is a symbol in cljs when called with variadic args
-        (gen-runtime-context!
-          (gen-cljs-log-impl level items)))
-      (do
-        (debug-assert (list? items))
-        (gen-clj-log-impl level items)))))
+      (gen-runtime-context!
+        (gen-cljs-log-impl level items))
+      (gen-clj-log-impl level items))))

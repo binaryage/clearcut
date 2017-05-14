@@ -9,7 +9,7 @@
   {; -- compiler config -----------------------------------------------------------------------------------------------------
    :diagnostics                                true                                                                           ; #{true falsy}
    :skip-config-validation                     false                                                                          ; #{true falsy}
-   :macroexpand-selectors                      true                                                                           ; #{true falsy}
+   :macroexpand-params                         true                                                                           ; #{true falsy}
    :elided-log-levels                          #{5 6}                                                                         ; a subset of constants/all-levels
 
    ; compile-time warnings/errors
@@ -52,7 +52,7 @@
 
 (s/def ::config/diagnostics ::config/boolish)
 (s/def ::config/skip-config-validation ::config/boolish)
-(s/def ::config/macroexpand-selectors ::config/boolish)
+(s/def ::config/macroexpand-params ::config/boolish)
 (s/def ::config/elided-log-levels ::config/log-levels-set)
 
 (s/def ::config/runtime-error-reporting ::config/reporting)
@@ -68,7 +68,7 @@
 (s/def ::config/config
   (s/keys :req-un [::config/diagnostics
                    ::config/skip-config-validation
-                   ::config/macroexpand-selectors
+                   ::config/macroexpand-params
                    ::config/elided-log-levels
                    ::config/runtime-error-reporting
                    ::config/runtime-warning-reporting

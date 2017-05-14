@@ -56,6 +56,16 @@
     (logs? (.apply log/fatal nil #js ["Hello," "world!"])
            "ERROR: (\"Hello,\" \"world!\")")))
 
+
+(deftest test-static-logging
+  (with-compiler-config {:elided-log-levels #{}}
+    (logs? (log/debug "output")
+           "LOG: (\"output\")")
+    (logs? (log/debug "s" nil 42 4.2 true :key)
+           "LOG: (\"s\" nil 42 4.2 true :key)")
+    (logs? (log/debug "s" (log/style "color:red") "xxx" (log/format "o") 'val)
+           "LOG: (\"%s %c%s %o\" \"s\" \"color:red\" \"xxx\" val)")))
+
 (deftest test-eliding
   (testing ":elided-log-levels does compile-time eliding"
     (with-compiler-config {:elided-log-levels #{}}

@@ -1,8 +1,7 @@
 (ns clearcut.tests.clojure
   (:require [clojure.test :refer :all]
             [clojure.string :as string]
-            [clearcut.core :as log]
-            [clearcut.types :refer [make-format make-style]]))
+            [clearcut.core :as log]))
 
 (deftest test-basic
   (testing "basic exercise"
@@ -13,4 +12,4 @@
     (log/debug 5)
     (log/trace 6))
   (testing "elide formatting/styling"
-    (log/fatal (make-format "f") 1 (make-style "css") 2 (make-format "f") 3 (make-style "css") 4)))
+    (log/fatal (log/format "f") 1 (log/style "css") 2 (log/format "f") 3 (log/style "css") 4)))

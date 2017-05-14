@@ -103,6 +103,7 @@
 
              :testing-clojure
              {:dependencies   ^:replace [[org.clojure/clojure "1.9.0-alpha16"]
+                                         [org.clojure/clojurescript "1.9.542"]
                                          [org.clojure/tools.logging "0.3.1"]
                                          [binaryage/env-config "0.2.0"]
                                          [funcool/cuerdas "2.0.3"]

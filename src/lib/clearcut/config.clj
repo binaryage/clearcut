@@ -139,5 +139,5 @@
 (defn elided-log-levels [& [config]]
   (get-config-key :elided-log-levels config))
 
-(defn macroexpand-selectors? [& [config]]
-  (true? (get-config-key :macroexpand-selectors config)))
+(defn macroexpand-params? [& [config]]
+  (true? (get-config-key :macroexpand-params config)))

@@ -38,10 +38,11 @@
   `(log! ~level ~items-array-sym))
 
 (defmacro gen-level-to-method [level]
+  (debug-assert (= (count constants/all-levels) 6))
   `(case ~level
-     ~constants/level-fatal js/console.error
-     ~constants/level-error js/console.error
-     ~constants/level-warn js/console.warn
-     ~constants/level-info js/console.info
-     ~constants/level-debug js/console.log
-     ~constants/level-trace js/console.log))
+     ~constants/level-fatal ~(level-to-method constants/level-fatal)
+     ~constants/level-error ~(level-to-method constants/level-error)
+     ~constants/level-warn ~(level-to-method constants/level-warn)
+     ~constants/level-info ~(level-to-method constants/level-info)
+     ~constants/level-debug ~(level-to-method constants/level-debug)
+     ~constants/level-trace ~(level-to-method constants/level-trace)))

@@ -1,13 +1,22 @@
 (ns clearcut.core
   "Public macros to be consumed via core.cljs."
+  (:refer-clojure :exclude [format])
   (:require [clojure.spec.alpha :as s]
             [clearcut.constants :as constants]
+            [clearcut.types]
             [clearcut.codegen :refer [gen-log]]
-            [clearcut.compiler :refer [with-compiler-context!]]))
+            [clearcut.compiler :refer [with-compiler-context!]])
+  (:import (clearcut.types Format Style)))
 
 (defn gen-log-with-env [form env level items]
   (with-compiler-context! form env
     (gen-log level items)))
+
+(defmacro style [css]
+  `(clearcut.types/->Style ~css))
+
+(defmacro format [fmtstr]
+  `(clearcut.types/->Format ~fmtstr))
 
 ; -- core macros ------------------------------------------------------------------------------------------------------------
 

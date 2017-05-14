@@ -10,14 +10,6 @@
             [clearcut.types :as types]
             [clearcut.helpers :as helpers]))
 
-; -- helpers ----------------------------------------------------------------------------------------------------------------
-
-(defn style [css]
-  (types/make-style css))
-
-(defn format [fmtstr]
-  (types/make-format fmtstr))
-
 ; -- diagnostics reporting --------------------------------------------------------------------------------------------------
 
 (defn ^:dynamic report-error-dynamically [msg data]
