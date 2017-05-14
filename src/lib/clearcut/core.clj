@@ -5,31 +5,32 @@
             [clearcut.codegen :refer [gen-log]]
             [clearcut.compiler :refer [with-compiler-context!]]))
 
+(defn gen-log-with-env [form env level items]
+  (with-compiler-context! form env
+    (gen-log level items)))
+
 ; -- core macros ------------------------------------------------------------------------------------------------------------
 
+(defmacro gen-variadic-invoke [level-key items]
+  (gen-log-with-env &form &env (level-key constants/levels) items))
+
 (defmacro fatal [& items]
-  (with-compiler-context! &form &env
-    (gen-log constants/level-fatal items)))
+  (gen-log-with-env &form &env constants/level-fatal items))
 
 (defmacro error [& items]
-  (with-compiler-context! &form &env
-    (gen-log constants/level-error items)))
+  (gen-log-with-env &form &env constants/level-error items))
 
 (defmacro warn [& items]
-  (with-compiler-context! &form &env
-    (gen-log constants/level-warn items)))
+  (gen-log-with-env &form &env constants/level-warn items))
 
 (defmacro info [& items]
-  (with-compiler-context! &form &env
-    (gen-log constants/level-info items)))
+  (gen-log-with-env &form &env constants/level-info items))
 
 (defmacro debug [& items]
-  (with-compiler-context! &form &env
-    (gen-log constants/level-debug items)))
+  (gen-log-with-env &form &env constants/level-debug items))
 
 (defmacro trace [& items]
-  (with-compiler-context! &form &env
-    (gen-log constants/level-trace items)))
+  (gen-log-with-env &form &env constants/level-trace items))
 
 ; -- specs for our macro apis -----------------------------------------------------------------------------------------------
 ;

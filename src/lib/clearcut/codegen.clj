@@ -78,19 +78,26 @@
 
 ; -- raw implementations ----------------------------------------------------------------------------------------------------
 
-(defn gen-cljs-log-impl [level item-list]
-  `(clearcut.core/log-dynamically ~level (cljs.core/array ~@item-list)))
+(defn gen-cljs-log-impl [level items]
+  (let [items-array (if (symbol? items)
+                      `(cljs.core/to-array ~items)
+                      `(cljs.core/array ~@items))]
+    `(clearcut.core/log-dynamically ~level ~items-array)))
 
-(defn gen-clj-log-impl [level item-list]
+(defn gen-clj-log-impl [level items]
   ; TODO: ensure clojure.tools.logging here (at compile time)
-  `(clearcut.clojure/log ~'*ns* ~level ~@item-list))
+  `(clearcut.clojure/log ~'*ns* ~level ~@items))
 
 ; -- shared macro bodies ----------------------------------------------------------------------------------------------------
 
-(defn gen-log [level item-list]
+(defn gen-log [level items]
   (debug-assert (integer? level))
   (if-not (elide-log-level? level)
     (if (cljs?)
-      (gen-runtime-context!
-        (gen-cljs-log-impl level item-list))
-      (gen-clj-log-impl level item-list))))
+      (do
+        (debug-assert (or (list? items) (symbol? items)))                                                                     ; items is a symbol in cljs when called with variadic args
+        (gen-runtime-context!
+          (gen-cljs-log-impl level items)))
+      (do
+        (debug-assert (list? items))
+        (gen-clj-log-impl level items)))))
