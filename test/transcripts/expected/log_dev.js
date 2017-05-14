@@ -23,4 +23,25 @@ try {
   clearcut.core.log_dynamically.call(null, 4, [1, new cljs.core.Keyword(null, "key", "key", -3), {}])
 } finally {
   clearcut.state._STAR_runtime_state_STAR_ = _STAR_runtime_state_STAR_1
-};
+}
+
+// SNIPPET #2:
+//   (testing "variadic log/info via apply"
+//     (apply info ["hello," "world!"]))
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+cljs.core.apply.call(null, clearcut.core.info, new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, ["hello,", "world!"], null));
+
+// SNIPPET #3:
+//   (testing "variadic log/info via .call"
+//     (.call info nil "hello," "world!"))
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+clearcut.core.info.call(null, "hello,", "world!");
+
+// SNIPPET #4:
+//   (testing "variadic log/info via .apply"
+//     (.apply info nil #js ["hello," "world!"]))
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+clearcut.core.info.apply(null, ["hello,", "world!"]);

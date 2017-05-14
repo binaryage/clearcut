@@ -10,3 +10,12 @@
 
 (testing "log/info"
   (info 1 :key (js-obj)))
+
+(testing "variadic log/info via apply"
+  (apply info ["hello," "world!"]))
+
+(testing "variadic log/info via .call"
+  (.call info nil "hello," "world!"))
+
+(testing "variadic log/info via .apply"
+  (.apply info nil #js ["hello," "world!"]))
