@@ -30,7 +30,7 @@
                     (.push result item)
                     (recur (next items) nil))))
         (do
-          (.unshift result (.trim (string/join format)))
+          (.unshift result (.trim (.join format "")))
           result)))))
 
 (defn prepare-log-args [items-array]
