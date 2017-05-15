@@ -106,4 +106,19 @@ try {
   clearcut.state.get_console_reporter.call(null).call(null, console.info, val_1)
 } finally {
   clearcut.state._STAR_runtime_state_STAR_ = _STAR_runtime_state_STAR_5
+}
+
+// SNIPPET #9:
+//   (testing "static logging with macro-expansion"
+//     (info (macro-identity "s") (macro-identity 42) (macro-identity (macro-identity :key))))
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+var _STAR_runtime_state_STAR_6 = clearcut.state._STAR_runtime_state_STAR_;
+clearcut.state._STAR_runtime_state_STAR_ = clearcut.state.prepare_state.call(null, new Error, function() {
+  arguments[0].apply(console, Array.prototype.slice.call(arguments, 1))
+});
+try {
+  clearcut.state.get_console_reporter.call(null).call(null, console.info, "s", 42, new cljs.core.Keyword(null, "key", "key", -3))
+} finally {
+  clearcut.state._STAR_runtime_state_STAR_ = _STAR_runtime_state_STAR_6
 };

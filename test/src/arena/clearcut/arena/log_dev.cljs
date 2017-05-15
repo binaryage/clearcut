@@ -33,3 +33,6 @@
 (testing "static logging with symbols"
   (let [val 42]
     (info val)))
+
+(testing "static logging with macro-expansion"
+  (info (macro-identity "s") (macro-identity 42) (macro-identity (macro-identity :key))))
