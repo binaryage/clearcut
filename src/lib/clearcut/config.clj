@@ -142,3 +142,9 @@
 
 (defn macroexpand-params? [& [config]]
   (true? (get-config-key :macroexpand-params config)))
+
+(defn cljs-log-method [level & [config]]
+  (let [methods-map (get-config-key :cljs-log-methods config)
+        method (get methods-map level)]
+    (assert method)
+    (symbol method)))

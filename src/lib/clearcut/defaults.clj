@@ -12,6 +12,13 @@
    :macroexpand-params                         true                                                                           ; #{true falsy}
    :elided-log-levels                          #{5 6}                                                                         ; a subset of constants/all-levels
 
+   :cljs-log-methods                           {1 'js/console.error                                                           ; log level -> #{symbol? string?}
+                                                2 'js/console.error                                                           ; log level -> #{symbol? string?}
+                                                3 'js/console.warn                                                            ; log level -> #{symbol? string?}
+                                                4 'js/console.info                                                            ; log level -> #{symbol? string?}
+                                                5 'js/console.log                                                             ; log level -> #{symbol? string?}
+                                                6 'js/console.log}                                                            ; log level -> #{symbol? string?}
+
    ; compile-time warnings/errors
 
    ; -- runtime config ------------------------------------------------------------------------------------------------------
@@ -48,12 +55,19 @@
 (s/def ::config/log-level #(contains? constants/all-levels %))
 (s/def ::config/log-levels-set #(clojure.set/subset? % constants/all-levels))
 
+(defn valid-cljs-log-methods? [v]
+  ; not sure how to express this in spec
+  (and (map? v)
+       (= (set (keys v)) constants/all-levels)
+       (every? #(or (symbol? %) (string? %)) (vals v))))
+
 ; -- config keys ------------------------------------------------------------------------------------------------------------
 
 (s/def ::config/diagnostics ::config/boolish)
 (s/def ::config/skip-config-validation ::config/boolish)
 (s/def ::config/macroexpand-params ::config/boolish)
 (s/def ::config/elided-log-levels ::config/log-levels-set)
+(s/def ::config/cljs-log-methods valid-cljs-log-methods?)
 
 (s/def ::config/runtime-error-reporting ::config/reporting)
 (s/def ::config/runtime-warning-reporting ::config/reporting)
@@ -70,6 +84,7 @@
                    ::config/skip-config-validation
                    ::config/macroexpand-params
                    ::config/elided-log-levels
+                   ::config/cljs-log-methods
                    ::config/runtime-error-reporting
                    ::config/runtime-warning-reporting
                    ::config/runtime-throw-errors-from-macro-call-sites

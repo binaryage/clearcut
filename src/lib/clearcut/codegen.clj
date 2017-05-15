@@ -26,15 +26,6 @@
   (debug-assert (contains? constants/all-levels level))
   (contains? (config/elided-log-levels) level))
 
-(defn level-to-method [level]
-  (condp = level
-    constants/level-fatal 'js/console.error
-    constants/level-error 'js/console.error
-    constants/level-warn 'js/console.warn
-    constants/level-info 'js/console.info
-    constants/level-debug 'js/console.log
-    constants/level-trace 'js/console.log))
-
 ; -- helper code generators -------------------------------------------------------------------------------------------------
 
 (defn gen-debug-runtime-state-consistency-check [body]
@@ -86,7 +77,7 @@
 
 (defn gen-static-cljs-log [level destructured-params]
   (let [prepared-args (schema/prepare-log-args destructured-params)
-        method (level-to-method level)]
+        method (config/cljs-log-method level)]
     (gen-static-log-call method prepared-args)))
 
 (defn gen-dynamic-cljs-log [level items]
