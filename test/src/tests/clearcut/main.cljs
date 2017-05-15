@@ -56,6 +56,14 @@
     (logs? (.apply log/fatal nil #js ["Hello," "world!"])
            "ERROR: (\"Hello,\" \"world!\")")))
 
+(deftest test-macro-expansion
+  (testing "macro expansion"
+    (logs? (log/info (macro-identity (log/style "color:red"))
+                     "hello"
+                     (macro-identity "world")
+                     (macro-identity [42 (macro-identity 1)])
+                     (macro-identity (macro-identity :foo)))
+           "INFO: (\"%c%s %s %o %o\" \"color:red\" \"hello\" \"world\" [42 1] :foo)")))
 
 (deftest test-static-logging
   (with-compiler-config {:elided-log-levels #{}}
