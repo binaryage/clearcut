@@ -2,7 +2,7 @@
   "The main namespace to be consumend by library users from ClojureScript.
   Provides core macros via core.clj and runtime support (see runtime.clj).
   Read about usage: https://github.com/binaryage/clearcut"
-  (:require-macros [clearcut.core :refer [gen-variadic-invoke]]
+  (:require-macros [clearcut.core]
                    [clearcut.runtime :as runtime])
   (:require [clearcut.config :as config]
             [clearcut.messages :as messages]
@@ -30,19 +30,19 @@
 ; -- variadic api -----------------------------------------------------------------------------------------------------------
 
 (defn fatal [& items]
-  (gen-variadic-invoke :fatal items))
+  (runtime/gen-variadic-invoke :fatal items))
 
 (defn error [& items]
-  (gen-variadic-invoke :error items))
+  (runtime/gen-variadic-invoke :error items))
 
 (defn warn [& items]
-  (gen-variadic-invoke :warn items))
+  (runtime/gen-variadic-invoke :warn items))
 
 (defn info [& items]
-  (gen-variadic-invoke :info items))
+  (runtime/gen-variadic-invoke :info items))
 
 (defn debug [& items]
-  (gen-variadic-invoke :debug items))
+  (runtime/gen-variadic-invoke :debug items))
 
 (defn trace [& items]
-  (gen-variadic-invoke :trace items))
+  (runtime/gen-variadic-invoke :trace items))

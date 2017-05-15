@@ -16,9 +16,6 @@
 
 ; -- core macros ------------------------------------------------------------------------------------------------------------
 
-(defmacro gen-variadic-invoke [level-key items]
-  (gen-log-with-env &form &env (level-key constants/levels) items))
-
 (defmacro fatal [& items]
   (gen-log-with-env &form &env constants/level-fatal items))
 
