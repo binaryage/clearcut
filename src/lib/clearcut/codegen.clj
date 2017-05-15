@@ -11,8 +11,11 @@
             [clearcut.helpers :as helpers]
             [clearcut.clojure]
             [clearcut.state :as state]
+            [clearcut.compiler :as compiler]
+            [clearcut.sdefs :as sdefs]
             [clojure.spec.alpha :as s]
-            [clearcut.compiler :as compiler]))
+            [clearcut.compiler :as compiler]
+            [clearcut.cljs :as cljs]))
 
 (defn cljs? []
   (helpers/cljs? state/*invocation-env*))
@@ -89,6 +92,20 @@
     constants/level-debug 'js/console.log
     constants/level-trace 'js/console.log))
 
+(defn macroexpand-param-list [param-list]
+  (map cljs/macroexpand param-list))
+
+(defn macroexpand-param-list-if-needed [param-list]
+  (if (config/macroexpand-params?)
+    (macroexpand-param-list param-list)
+    param-list))
+
+(defn static-params? [param-list]
+  (let [expanded-params (macroexpand-param-list-if-needed param-list)
+        destructured-params (s/conform :clearcut.sdefs/static-params expanded-params)]
+    (if-not (s/invalid? destructured-params)
+      destructured-params)))
+
 (defn gen-static-cljs-log [level destructured-params]
   (let [prepared-args (schema/prepare-log-args destructured-params)
         method (level-to-method level)]
@@ -99,8 +116,8 @@
   (debug-assert (or (list? items) (symbol? items)))
   (if (symbol? items)                                                                                                         ; items is a symbol in cljs when called with variadic args
     `(clearcut.core/log-dynamically ~level (cljs.core/to-array ~items))
-    (if-let [static-params (schema/static-params? items)]
-      (gen-static-cljs-log level static-params)
+    (if-let [destructured-params (static-params? items)]
+      (gen-static-cljs-log level destructured-params)
       `(clearcut.core/log-dynamically ~level (cljs.core/array ~@items)))))
 
 (defn gen-clj-log-impl [level items]

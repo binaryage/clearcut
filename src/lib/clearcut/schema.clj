@@ -1,25 +1,6 @@
 (ns clearcut.schema
-  (:require [clojure.spec.alpha :as s]
-            [clearcut.compiler :as compiler]
-            [clearcut.config :as config]
-            [clearcut.sdefs :as sdefs]
-            [clearcut.types :as types]
-            [clojure.string :as string]
+  (:require [clojure.string :as string]
             [clearcut.debug :refer [log debug-assert]]))
-
-(defn macroexpand-param-list [param-list]
-  (map compiler/macroexpand param-list))
-
-(defn macroexpand-param-list-if-needed [param-list]
-  (if (config/macroexpand-params?)
-    (macroexpand-param-list param-list)
-    param-list))
-
-(defn static-params? [param-list]
-  (let [expanded-params (macroexpand-param-list-if-needed param-list)
-        destructured-params (s/conform :clearcut.sdefs/static-params expanded-params)]
-    (if-not (s/invalid? destructured-params)
-      destructured-params)))
 
 ; -- static formatting of log args ------------------------------------------------------------------------------------------
 ; keep this in sync with dynamic version!
