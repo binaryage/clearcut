@@ -21,12 +21,10 @@
 
 (def try-resolve-cljs-env-ns-symbol (memoize try-resolve-cljs-env-ns-symbol*))
 
-(defn try-resolve-cljs-env-var* [sym]
+(defn try-resolve-cljs-env-var [sym]
   (let [v (try-resolve-cljs-env-ns-symbol sym)]
     (if (var? v)
       (var-get v))))
-
-(def try-resolve-cljs-env-var (memoize try-resolve-cljs-env-var*))
 
 (defn get-cljs-env-compiler []
   (try-resolve-cljs-env-var '*compiler*))
@@ -44,12 +42,10 @@
 
 (def try-resolve-cljs-analyzer-ns-symbol (memoize try-resolve-cljs-analyzer-ns-symbol*))
 
-(defn try-resolve-cljs-analyzer-var* [sym]
+(defn try-resolve-cljs-analyzer-var [sym]
   (let [v (try-resolve-cljs-analyzer-ns-symbol sym)]
     (if (var? v)
       (var-get v))))
-
-(def try-resolve-cljs-analyzer-var (memoize try-resolve-cljs-analyzer-var*))
 
 ; -- cljs.closure ----------------------------------------------------------------------------------------------------------
 
@@ -64,12 +60,10 @@
 
 (def try-resolve-cljs-closure-ns-symbol (memoize try-resolve-cljs-closure-ns-symbol*))
 
-(defn try-resolve-cljs-closure-var* [sym]
+(defn try-resolve-cljs-closure-var [sym]
   (let [v (try-resolve-cljs-closure-ns-symbol sym)]
     (if (var? v)
       (var-get v))))
-
-(def try-resolve-cljs-closure-var (memoize try-resolve-cljs-closure-var*))
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 

@@ -20,13 +20,11 @@
 
 (def try-resolve-clojure-tools-logging-ns-symbol (memoize try-resolve-clojure-tools-logging-ns-symbol*))
 
-(defn try-resolve-clojure-tools-logging-var* [sym]
+(defn try-resolve-clojure-tools-logging-var [sym]
   (let [v (try-resolve-clojure-tools-logging-ns-symbol sym)]
     (if (var? v)
       (var-get v)
       (throw (ex-info (str "clearcut: Unable to resolve var " sym " in " clojure-tools-logging-ns-sym ".") {})))))
-
-(def try-resolve-clojure-tools-logging-var (memoize try-resolve-clojure-tools-logging-var*))
 
 (defn get-clojure-tools-logging-logger-factory []
   (try-resolve-clojure-tools-logging-var '*logger-factory*))
@@ -47,13 +45,11 @@
 
 (def try-resolve-clojure-tools-logging-impl-ns-symbol (memoize try-resolve-clojure-tools-logging-impl-ns-symbol*))
 
-(defn try-resolve-clojure-tools-logging-impl-var* [sym]
+(defn try-resolve-clojure-tools-logging-impl-var [sym]
   (let [v (try-resolve-clojure-tools-logging-impl-ns-symbol sym)]
     (if (var? v)
       (var-get v)
       (throw (ex-info (str "clearcut: Unable to resolve var " sym " in " clojure-tools-logging-impl-ns-sym ".") {})))))
-
-(def try-resolve-clojure-tools-logging-impl-var (memoize try-resolve-clojure-tools-logging-impl-var*))
 
 (defn get-clojure-tools-logging-impl-get-logger []
   (try-resolve-clojure-tools-logging-impl-var 'get-logger))
