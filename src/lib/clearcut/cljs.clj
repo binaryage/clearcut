@@ -5,6 +5,7 @@
   Solution is to resolve ClojureScript API dynamically and use it only if available."
   (:refer-clojure :exclude [macroexpand])
   (:require [clojure.walk :refer [prewalk]]
+            [clearcut.log :refer [log]]
             [clearcut.state :as state]))
 
 ; -- cljs.env ---------------------------------------------------------------------------------------------------------------
@@ -80,15 +81,22 @@
 
 ; -- cljs macro expanding ---------------------------------------------------------------------------------------------------
 
+(declare macroexpand-all*)
+
 (defn macroexpand* [env form]
   (let [macroexpand-1 (try-resolve-cljs-analyzer-var 'macroexpand-1)
+        _ (assert macroexpand-1 "org.clojure/clojurescript required on classpath")
         expanded-form (macroexpand-1 env form)]
     (if (identical? form expanded-form)
       expanded-form
-      (recur env expanded-form))))
+      (macroexpand-all* env expanded-form))))
 
 (defn macroexpand-all* [env form]
-  (prewalk (fn [x] (if (seq? x) (macroexpand* env x) x)) form))
+  (let [* (fn [x]
+            (if (seq? x)
+              (macroexpand* env x)
+              x))]
+    (prewalk * form)))
 
 (defn macroexpand [form]
   (assert clearcut.state/*invocation-env*)
