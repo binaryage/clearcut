@@ -1,12 +1,22 @@
 (ns clearcut.arena.log-rel
   (:refer-clojure :exclude [format])
   (:require-macros [clearcut.arena.macros :refer [macro-identity]])
-  (:require [clearcut.core :refer [info style format]]
-            [clearcut.tools :refer [init-arena-test! testing]]))
+  (:require [clearcut.core :refer [fatal error warn info debug trace style format]]
+            [clearcut.tools :refer [init-arena-test! testing]]
+            [clearcut.config :refer [with-compiler-config]]))
 
 (init-arena-test!)
 
 ; we want to test generated code shape expansion under dev mode
+
+(testing "exercise all without args"
+  (with-compiler-config {:elided-log-levels nil}
+    (fatal)
+    (error)
+    (warn)
+    (info)
+    (debug)
+    (trace)))
 
 (testing "log/info"
   (info 1 :key (js-obj)))
