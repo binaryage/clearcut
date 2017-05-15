@@ -17,38 +17,25 @@
             [clearcut.compiler :as compiler :refer [with-compiler-context!]]
             [clearcut.cljs :as cljs]))
 
+; -- helpers ----------------------------------------------------------------------------------------------------------------
+
 (defn cljs? []
   (helpers/cljs? state/*invocation-env*))
 
+(defn elide-log-level? [level]
+  (debug-assert (contains? constants/all-levels level))
+  (contains? (config/elided-log-levels) level))
+
+(defn level-to-method [level]
+  (condp = level
+    constants/level-fatal 'js/console.error
+    constants/level-error 'js/console.error
+    constants/level-warn 'js/console.warn
+    constants/level-info 'js/console.info
+    constants/level-debug 'js/console.log
+    constants/level-trace 'js/console.log))
+
 ; -- helper code generators -------------------------------------------------------------------------------------------------
-
-(defn gen-reported-message [msg]
-  msg)
-
-(defn gen-reported-data [data]
-  `(let [data# ~data]
-     (or (if (clearcut.config/use-envelope?)
-           (if-let [devtools# (cljs.core/aget goog/global "devtools")]
-             (if-let [toolbox# (cljs.core/aget devtools# "toolbox")]
-               (if-let [envelope# (cljs.core/aget toolbox# "envelope")]
-                 (if (cljs.core/fn? envelope#)
-                   (envelope# data# "details"))))))
-         data#)))
-
-(defn gen-console-method [kind]
-  (case kind
-    :error `(aget js/console "error")
-    :warning `(aget js/console "warn")))
-
-(defn gen-report-runtime-message [kind msg data]
-  (debug-assert (contains? #{:error :warning} kind))
-  (let [mode (case kind
-               :error `(clearcut.config/get-error-reporting)
-               :warning `(clearcut.config/get-warning-reporting))]
-    `(case ~mode
-       :throw (throw (clearcut.state/prepare-error-from-call-site ~(gen-reported-message msg) ~(gen-reported-data data)))
-       :console ((clearcut.state/get-console-reporter) ~(gen-console-method kind) ~(gen-reported-message msg) ~(gen-reported-data data))
-       false nil)))
 
 (defn gen-debug-runtime-state-consistency-check [body]
   (if-not (config/debug?)
@@ -72,27 +59,11 @@
       body-code
       (let [console-reporter (list 'js* console-reporter-template)
             call-site-error `(js/Error.)]
-        ; it is imporant to keep console-reporter and call-site-error inline so we get proper call-site location and line number
+        ; it is imporant to keep console-reporter and call-site-error inline so we get proper call-site location / line number
         `(binding [clearcut.state/*runtime-state* (clearcut.state/prepare-state ~call-site-error ~console-reporter)]
            ~(gen-debug-runtime-state-consistency-check body-code))))))
 
-(defn gen-supress-reporting? [msg-id]
-  `(contains? (clearcut.config/get-suppress-reporting) ~msg-id))
-
-(defn elide-log-level? [level]
-  (debug-assert (contains? constants/all-levels level))
-  (contains? (config/elided-log-levels) level))
-
-; -- raw implementations ----------------------------------------------------------------------------------------------------
-
-(defn level-to-method [level]
-  (condp = level
-    constants/level-fatal 'js/console.error
-    constants/level-error 'js/console.error
-    constants/level-warn 'js/console.warn
-    constants/level-info 'js/console.info
-    constants/level-debug 'js/console.log
-    constants/level-trace 'js/console.log))
+; -- cljs code generation ---------------------------------------------------------------------------------------------------
 
 (defn macroexpand-param-list [param-list]
   (map cljs/macroexpand param-list))
@@ -102,7 +73,7 @@
     (macroexpand-param-list param-list)
     param-list))
 
-(defn static-params? [param-list]
+(defn destructure-static-params [param-list]
   (let [expanded-params (macroexpand-param-list-if-needed param-list)
         destructured-params (s/conform :clearcut.sdefs/static-params expanded-params)]
     (if-not (s/invalid? destructured-params)
@@ -118,16 +89,25 @@
         method (level-to-method level)]
     (gen-static-log-call method prepared-args)))
 
-(defn gen-cljs-log-impl [level items]
+(defn gen-dynamic-cljs-log [level items]
+  `(clearcut.core/log-dynamically ~level (cljs.core/array ~@items)))
+
+(defn gen-variadic-cljs-log [level items-sym]
+  (debug-assert (symbol? items-sym))
+  `(clearcut.core/log-dynamically ~level (cljs.core/to-array ~items-sym)))
+
+(defn gen-cljs-log [level items]
   (debug-assert (or (list? items) (symbol? items)))
   (gen-runtime-context-if-needed!
     (if (symbol? items)                                                                                                       ; items is a symbol in cljs when called with variadic args
-      `(clearcut.core/log-dynamically ~level (cljs.core/to-array ~items))
-      (if-let [destructured-params (static-params? items)]
+      (gen-variadic-cljs-log level items)
+      (if-let [destructured-params (destructure-static-params items)]
         (gen-static-cljs-log level destructured-params)
-        `(clearcut.core/log-dynamically ~level (cljs.core/array ~@items))))))
+        (gen-dynamic-cljs-log level items)))))
 
-(defn gen-clj-log-impl [level items]
+; -- clj code generation ----------------------------------------------------------------------------------------------------
+
+(defn gen-clj-log [level items]
   (debug-assert (list? items))
   ; TODO: ensure clojure.tools.logging here (at compile time)
   ; TOOD: we could do macro-expansion and compile-time validation of items
@@ -139,10 +119,9 @@
   (debug-assert (integer? level))
   (if-not (elide-log-level? level)
     (if (cljs?)
-      (gen-cljs-log-impl level items)
-      (gen-clj-log-impl level items))))
+      (gen-cljs-log level items)
+      (gen-clj-log level items))))
 
 (defn gen-log-with-env [form env level items]
   (with-compiler-context! form env
     (gen-log level items)))
-

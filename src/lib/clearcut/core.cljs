@@ -14,35 +14,35 @@
 ; -- diagnostics reporting --------------------------------------------------------------------------------------------------
 
 (defn ^:dynamic report-error-dynamically [msg data]
-  (runtime/gen-report-error-dynamically msg data))
+  (runtime/report-error-dynamically msg data))
 
 (defn ^:dynamic report-warning-dynamically [msg data]
-  (runtime/gen-report-warning-dynamically msg data))
+  (runtime/report-warning-dynamically msg data))
 
 (defn ^:dynamic report-if-needed-dynamically [msg-id & [info]]
-  (runtime/gen-report-if-needed-dynamically msg-id info))
+  (runtime/report-dynamically-if-needed msg-id info))
 
 ; -- runtime support for macros ---------------------------------------------------------------------------------------------
 
 (defn log-dynamically [level items]
-  (runtime/gen-log-dynamically level items))
+  (runtime/log-dynamically level items))
 
 ; -- variadic api -----------------------------------------------------------------------------------------------------------
 
 (defn fatal [& items]
-  (runtime/gen-variadic-invoke :fatal items))
+  (runtime/log-variadic :fatal items))
 
 (defn error [& items]
-  (runtime/gen-variadic-invoke :error items))
+  (runtime/log-variadic :error items))
 
 (defn warn [& items]
-  (runtime/gen-variadic-invoke :warn items))
+  (runtime/log-variadic :warn items))
 
 (defn info [& items]
-  (runtime/gen-variadic-invoke :info items))
+  (runtime/log-variadic :info items))
 
 (defn debug [& items]
-  (runtime/gen-variadic-invoke :debug items))
+  (runtime/log-variadic :debug items))
 
 (defn trace [& items]
-  (runtime/gen-variadic-invoke :trace items))
+  (runtime/log-variadic :trace items))
