@@ -47,12 +47,8 @@ clearcut.core.info.call(null, "hello,", "world!");
 clearcut.core.info.apply(null, ["hello,", "world!"]);
 
 // SNIPPET #5:
-//   (testing "static logging"
-//     (info "output")
-//     (info "s" nil 42 4.2 true :key)
-//     (info "s" (style "color:red") "xxx" (format "o"))
-//     (let [val 42]
-//       (info val)))
+//   (testing "trivial static logging"
+//     (info "output"))
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 var _STAR_runtime_state_STAR_2 = clearcut.state._STAR_runtime_state_STAR_;
@@ -64,6 +60,12 @@ try {
 } finally {
   clearcut.state._STAR_runtime_state_STAR_ = _STAR_runtime_state_STAR_2
 }
+
+// SNIPPET #6:
+//   (testing "simple static logging"
+//     (info "s" nil 42 4.2 true :key))
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 var _STAR_runtime_state_STAR_3 = clearcut.state._STAR_runtime_state_STAR_;
 clearcut.state._STAR_runtime_state_STAR_ = clearcut.state.prepare_state.call(null, new Error, function() {
   arguments[0].apply(console, Array.prototype.slice.call(arguments, 1))
@@ -73,6 +75,12 @@ try {
 } finally {
   clearcut.state._STAR_runtime_state_STAR_ = _STAR_runtime_state_STAR_3
 }
+
+// SNIPPET #7:
+//   (testing "static logging with formatting"
+//     (info "s" (style "color:red") "xxx" (format "o")))
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 var _STAR_runtime_state_STAR_4 = clearcut.state._STAR_runtime_state_STAR_;
 clearcut.state._STAR_runtime_state_STAR_ = clearcut.state.prepare_state.call(null, new Error, function() {
   arguments[0].apply(console, Array.prototype.slice.call(arguments, 1))
@@ -82,6 +90,13 @@ try {
 } finally {
   clearcut.state._STAR_runtime_state_STAR_ = _STAR_runtime_state_STAR_4
 }
+
+// SNIPPET #8:
+//   (testing "static logging with symbols"
+//     (let [val 42]
+//       (info val)))
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 var val_1 = 42;
 var _STAR_runtime_state_STAR_5 = clearcut.state._STAR_runtime_state_STAR_;
 clearcut.state._STAR_runtime_state_STAR_ = clearcut.state.prepare_state.call(null, new Error, function() {
