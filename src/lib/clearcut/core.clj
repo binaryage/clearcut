@@ -3,20 +3,16 @@
   (:refer-clojure :exclude [format])
   (:require [clojure.spec.alpha :as s]
             [clearcut.constants :as constants]
-            [clearcut.types]
-            [clearcut.codegen :refer [gen-log]]
-            [clearcut.compiler :refer [with-compiler-context!]])
+            [clearcut.codegen :refer [gen-log-with-env]])
   (:import (clearcut.types Format Style)))
 
-(defn gen-log-with-env [form env level items]
-  (with-compiler-context! form env
-    (gen-log level items)))
-
-(defmacro style [css]
-  `(clearcut.types/->Style ~css))
+; -- format/style macros ----------------------------------------------------------------------------------------------------
 
 (defmacro format [fmtstr]
   `(clearcut.types/->Format ~fmtstr))
+
+(defmacro style [css]
+  `(clearcut.types/->Style ~css))
 
 ; -- core macros ------------------------------------------------------------------------------------------------------------
 

@@ -4,7 +4,8 @@
 
 (def all-builds
   (concat
-    [(make-build "log_dev.cljs" "" {} {:optimizations :whitespace})]))
+    [(make-build "log_dev.cljs" "" {} {:optimizations :whitespace})
+     (make-build "log_rel.cljs" "")]))
 
 ; -- tests ------------------------------------------------------------------------------------------------------------------
 

@@ -2,11 +2,12 @@
   "The main namespace to be consumend by library users from ClojureScript.
   Provides core macros via core.clj and runtime support (see runtime.clj).
   Read about usage: https://github.com/binaryage/clearcut"
-  (:require-macros [clearcut.core :refer [gen-variadic-invoke]])
-  (:require [clearcut.state]
-            [clearcut.config]
-            [clearcut.messages]
-            [clearcut.runtime :as runtime]
+  (:require-macros [clearcut.core :refer [gen-variadic-invoke]]
+                   [clearcut.runtime :as runtime])
+  (:require [clearcut.config :as config]
+            [clearcut.messages :as messages]
+            [clearcut.state :as state]
+            [clearcut.schema :as schema]
             [clearcut.types :as types]
             [clearcut.helpers :as helpers]))
 

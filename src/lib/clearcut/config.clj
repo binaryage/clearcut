@@ -5,6 +5,7 @@
             [env-config.core :as env-config]
             [clearcut.cljs :as cljs]
             [clearcut.state :as state]
+            [clearcut.log :refer [log]]
             [clearcut.helpers :as helpers :refer [gensym]]
             [clearcut.defaults :as defaults]))
 

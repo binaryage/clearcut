@@ -1,4 +1,4 @@
-(ns clearcut.arena.log-dev
+(ns clearcut.arena.log-rel
   (:refer-clojure :exclude [format])
   (:require-macros [clearcut.arena.macros :refer [macro-identity]])
   (:require [clearcut.core :refer [info style format]]
